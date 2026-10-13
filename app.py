@@ -16,24 +16,50 @@ def divide(a, b):
     return a / b
 
 
-if __name__ == "__main__":
+def get_number(prompt):
+    while True:
+        try:
+            return float(input(prompt))
+        except ValueError:
+            print("Invalid input. Please enter a valid number.")
+
+
+def calculator():
+    operations = {
+        "1": ("Addition", add),
+        "2": ("Subtraction", subtract),
+        "3": ("Multiplication", multiply),
+        "4": ("Division", divide),
+    }
+
     print("Simple Calculator")
-    print("Operations: add, subtract, multiply, divide")
+    print("1. Add")
+    print("2. Subtract")
+    print("3. Multiply")
+    print("4. Divide")
+    print("5. Exit")
 
-    num1 = float(input("Enter first number: "))
-    operation = input("Enter operation (add/subtract/multiply/divide): ").strip().lower()
-    num2 = float(input("Enter second number: "))
+    while True:
+        choice = input("Choose an option (1-5): ").strip()
 
-    if operation == "add":
-        result = add(num1, num2)
-    elif operation == "subtract":
-        result = subtract(num1, num2)
-    elif operation == "multiply":
-        result = multiply(num1, num2)
-    elif operation == "divide":
-        result = divide(num1, num2)
-    else:
-        print("Invalid operation.")
-        raise SystemExit
+        if choice == "5":
+            print("Goodbye!")
+            break
 
-    print(f"Result: {result}")
+        if choice not in operations:
+            print("Invalid option. Please try again.")
+            continue
+
+        operation_name, operation = operations[choice]
+        num1 = get_number("Enter first number: ")
+        num2 = get_number("Enter second number: ")
+
+        try:
+            result = operation(num1, num2)
+            print(f"{operation_name} result: {result}")
+        except ValueError as exc:
+            print(f"Error: {exc}")
+
+
+if __name__ == "__main__":
+    calculator()
